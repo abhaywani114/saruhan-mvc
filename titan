@@ -1,0 +1,10 @@
+#!usr/bin/php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/System/Kernel/Starter.php';
+
+$params     = array_slice($argv, 1);
+$console    = new System\Libs\Console\Console();
+
+echo $console->run($params);
