@@ -111,8 +111,16 @@ class Response
 	/**
 	 * Redirect back to ref page
 	 */
-	public function back() {
-		header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/'));
+	public function back($ref = '') {
+        try {
+            $http_ref = $_SERVER['HTTP_REFERER'] ?? '/';
+            $http_ref = explode("/", $http_ref);
+            $http_ref[count($http_ref) - 1] = $ref;
+            $http_ref = implode("/", $http_ref);
+        } catch (\Exception $e) {
+        }
+
+		header('Location: ' . ($http_ref ?? '/'));
 		exit;
 	}
 

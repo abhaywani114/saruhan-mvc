@@ -19,16 +19,24 @@ class Home extends Controller
 	}
 
 	public function test_user_lang() {
-	
 		View::theme('templateone')->render('test_lang');
 	}
 
-	public function set_user_lang($lang) {
+	public function test_about() {
+	
+		View::theme('templateone')->render('test_about');
+	}
+
+
+
+	public function set_user_lang($lang, $ref) {
 		$is_lang_exist = \DB::select('*')->table('languages')->where('seo', '=', $lang)->getRow();
+
 		if (!empty($is_lang_exist))
 			set_lang($lang,'user');
 
-		return Response::back();
+        $link = lang('test_lang', $ref);
+		return Response::back($link);
 	}
 
 }

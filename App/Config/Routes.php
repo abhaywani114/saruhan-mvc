@@ -71,11 +71,17 @@ Route::namespace('backend')->group(function(){
 
 //FRONTEND - tempalateone
 Route::namespace('frontend')->middleware(['Localize:user'])->group(function () {
+
+    $link = lang('test_lang', 'link', '', 'user');
+    Route::get("/$link", 'Home@test_about'); 
+
     Route::get('/', 'Home@index');
     Route::get('/index',  'Home@index');
     Route::get('/iletisim', 'Contact@index');
     //Route::get('/{num}', 'Page@index');
-    Route::get('/test_user_language', 'Home@test_user_lang');
-    Route::get('set-user-lang/{lang}', 'Home@set_user_lang');
+    //
+    $link_test = lang('test_lang', 'link_test', '', 'user');
+    Route::get("/$link_test", 'Home@test_user_lang');
+    Route::get('set-user-lang/{lang}/{ref}', 'Home@set_user_lang');
 });
 
