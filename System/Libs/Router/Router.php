@@ -269,9 +269,13 @@ class Router
                     if (array_key_exists('middlewares', $val)) {
                         foreach ($val['middlewares'] as $midKey => $midVal) {
                             list($controller, $method) = explode('@', $midVal['callback']);
+                            $controller = explode(':', $controller);
+                            $param = $controller[1] ?? '';
+                            $param = explode(',', $param);
+                            $controller = $controller[0];
 
                             if (class_exists($controller)) {
-                                call_user_func_array([new $controller, $method], []);
+                                call_user_func_array([new $controller, $method], $param);
                             }
                         }
                     }

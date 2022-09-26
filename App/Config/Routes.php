@@ -7,11 +7,7 @@ Route::set404(function(){
 
 
 //BACKEND
-Route::Prefix('saruhanweb')->namespace('backend')->middleware(['auth'])->group(function(){
-
-    $defaultLang = Model::run('options','backend')->defaultLang();
-    set_lang($defaultLang->admin_language);
-    
+Route::Prefix('saruhanweb')->namespace('backend')->middleware(['auth', 'Localize:admin'])->group(function(){    
     //get
     Route::get('/', 'Dashboard@index');
     Route::get('/saruhanweb', 'Dashboard@index');
@@ -64,6 +60,7 @@ Route::Prefix('saruhanweb')->namespace('backend')->middleware(['auth'])->group(f
     Route::post('/delete-language', 'Languages@delete');
     Route::post('/set-site-lang', 'Languages@setSiteLang');
     Route::post('/set-admin-lang', 'Languages@setAdminLang');
+    Route::get('/set-admin-lang/{lang}', 'Dashboard@set_admin_lang');
     Route::get('/logout', 'Login@logout');
 });
 
@@ -73,12 +70,12 @@ Route::namespace('backend')->group(function(){
 });
 
 //FRONTEND - tempalateone
-Route::namespace('frontend')->group(function () {
-
+Route::namespace('frontend')->middleware(['Localize:user'])->group(function () {
     Route::get('/', 'Home@index');
     Route::get('/index',  'Home@index');
     Route::get('/iletisim', 'Contact@index');
-    Route::get('/{num}', 'Page@index');
-
+    //Route::get('/{num}', 'Page@index');
+    Route::get('/test_user_language', 'Home@test_user_lang');
+    Route::get('set-user-lang/{lang}', 'Home@set_user_lang');
 });
 

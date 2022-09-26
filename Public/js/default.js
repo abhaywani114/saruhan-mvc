@@ -27,16 +27,13 @@ $(document).ready(function() {
     $('#langSelectAdmin').on('change', function () {
         var lang = $( this ).val();
         $.ajax({
-            url: "/saruhanweb/set-admin-lang",
-            type: "post",
+            url: `/saruhanweb/set-admin-lang/${lang}`,
+            type: "get",
             cache: false,
-            data: {
-                lang: lang
-            },
             beforeSend: function() {
             },
             success: function(response) {
-                window.location.reload(0);
+                  window.location.reload(0);
             },
             complete: function(){
             }

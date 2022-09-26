@@ -17,4 +17,13 @@ class Dashboard extends Controller
 
         View::theme('saruhanweb')->render('home',$data);
 	}
+
+        public function set_admin_lang($lang) {
+		$is_lang_exist = \DB::select('*')->table('languages')->where('seo', '=', $lang)->getRow();
+		if (!empty($is_lang_exist)) {
+ 			set_lang($lang,'admin');
+                }
+
+		echo "{'status':'true'}";
+	}
 }

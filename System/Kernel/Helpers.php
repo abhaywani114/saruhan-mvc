@@ -11,6 +11,13 @@
  *
  *************************************************/
 
+if (!function_exists('route_access_type')) {
+    function route_access_type($type) {
+        global $access_type;
+        $access_type = $type;
+    }
+} 
+
 /**
  * Debug Helper
  */
@@ -32,16 +39,33 @@ if (!function_exists('dd')) {
  * @return string
  */
 if (!function_exists('get_lang')) {
-    function get_lang()
+    function get_lang($for = '')
     {
+        global $access_type;
+        if ($for == '') $for = $access_type;
+
         $lang = config('app.general.default_lang');
 
-        if (Session::has(md5('lang')))
-            return Session::get(md5('lang'));
+        if (Session::has(md5("lang_$for")))
+            return Session::get(md5("lang_$for"));
 
-        Session::set(md5('lang'), $lang);
+        Session::set(md5("lang_$for"), $lang);
 
         return $lang;
+    }
+}
+
+/**
+ * Get language list
+ * 
+ * @return array
+ */
+if (!function_exists('get_lang_list')) {
+    function get_lang_list()
+    {
+        $languages = Model::run('languages', 'backend')->languages();
+
+        return $languages['langs'];
     }
 }
 
@@ -52,8 +76,11 @@ if (!function_exists('get_lang')) {
  * @return void
  */
 if (!function_exists('set_lang')) {
-    function set_lang($lang = '')
+    function set_lang($lang = '', $for = '')
     {
+        global $access_type;
+        if ($for == '') $for = $access_type;
+
         $language = config('app.general.default_lang');
 
         if (!is_string($lang))
@@ -62,7 +89,7 @@ if (!function_exists('set_lang')) {
         if (empty($lang))
             $lang = $language;
 
-        Session::set(md5('lang'), $lang);
+        Session::set(md5("lang_$for"), $lang);
     }
 }
 
@@ -75,21 +102,24 @@ if (!function_exists('set_lang')) {
  * @return string
  */
 if (!function_exists('lang') ) {
-    function lang($file = '', $key = '', $change = '')
+    function lang($file = '', $key = '', $change = '', $for = '')
     {
         global $lang;
+        global $access_type;
+        if ($for == '') $for = $access_type;
 
         $config = config('app.general.languages');
 
         if (!is_string($file) || !is_string($key))
             return false;
-  
-		//if newly added language doesn't exit
+
+
+		//if newly added language files doesn't exit
 		$default_language = config('app.general.default_lang');
 
-        $appLangDir = APP_DIR . 'Languages/' . ucwords($config[get_lang()] ?? $config[$default_language] ) . '/' . ucwords($file) . '.php';
+        $appLangDir = APP_DIR . 'Languages/' . ucwords($config[get_lang($for)] ?? $config[$default_language] ) . '/' . ucwords($file) . '.php';
       
-        $sysLangDir = SYSTEM_DIR . 'Languages/' . ucwords($config[get_lang()] ?? $config[$default_language]) . '/' . ucwords($file) . '.php';
+        $sysLangDir = SYSTEM_DIR . 'Languages/' . ucwords($config[get_lang($for)] ?? $config[$default_language]) . '/' . ucwords($file) . '.php';
 
         if (file_exists($appLangDir))
             require_once $appLangDir;

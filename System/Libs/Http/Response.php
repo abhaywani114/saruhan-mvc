@@ -108,4 +108,12 @@ class Response
 		]);
 	}
 
+	/**
+	 * Redirect back to ref page
+	 */
+	public function back() {
+		header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/'));
+		exit;
+	}
+
 }

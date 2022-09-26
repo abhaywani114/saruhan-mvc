@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html >
 <head>
     <title>Saruhan Web Ajans | Yönetim Paneli</title>
     <link rel="stylesheet" href="{!! get_asset('plugins/sweetAlert/sweetalert.css') !!}">

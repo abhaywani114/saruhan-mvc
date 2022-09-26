@@ -5,7 +5,7 @@ return [
 	 * General
 	 */
 	'general'		=> [
-		'languages'					=> ['tr' => 'Turkish', 'en' => 'English', 'fr' => 'French'],
+		'languages'					=> ['tr' => 'Turkish', 'en' => 'English', 'fr' => 'French', 'ur' => 'Urdu'],
 		'default_lang'				=> 'tr',
 	],
 
